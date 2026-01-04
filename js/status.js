@@ -42,18 +42,20 @@ CONFIG.channels.forEach(channel => {
   if (channel.platform === "twitch") {
     platformEl.textContent = "Twitch";
     platformEl.className = "platform twitch";
+
+    // 預設連到頻道首頁
     linkEl.href = `https://twitch.tv/${channel.twitch.channel}`;
 
-    // 🔑 快取破壞（iframe / Safari / Google Sites 必須）
+    const previewEl = card.querySelector(".preview");
+
+    // 🔑 快取破壞（Safari / Google Sites / iframe）
     const ts = Date.now();
 
     fetch(
       `https://decapi.me/twitch/uptime/${encodeURIComponent(
         channel.twitch.channel
       )}?_=${ts}`,
-      {
-        cache: "no-store"
-      }
+      { cache: "no-store" }
     )
       .then(r => {
         if (!r.ok) throw new Error("Network error");
@@ -62,20 +64,35 @@ CONFIG.channels.forEach(channel => {
       .then(text => {
         const t = text.toLowerCase();
 
-        // decapi 常見 offline 回傳字樣
+        // decapi 常見離線回傳
         const isOffline =
           t.includes("offline") ||
           t.includes("not live") ||
           t.includes("is not live");
 
         if (isOffline) {
+          // ⚫ 未直播
           statusEl.textContent = "⚫ 目前未直播";
           statusEl.className = "status offline";
           card.classList.remove("live");
+
+          previewEl.classList.add("hidden");
+          previewEl.innerHTML = "";
         } else {
+          // 🟢 正在直播
           statusEl.textContent = "🟢 正在直播中";
           statusEl.className = "status live";
           card.classList.add("live");
+
+          // 顯示 Twitch 預覽
+          previewEl.classList.remove("hidden");
+          previewEl.innerHTML = `
+            <iframe
+              src="https://player.twitch.tv/?channel=${channel.twitch.channel}&parent=${CONFIG.twitchParent}"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          `;
         }
       })
       .catch(err => {
@@ -83,6 +100,9 @@ CONFIG.channels.forEach(channel => {
         statusEl.textContent = "狀態讀取失敗";
         statusEl.className = "status offline";
         card.classList.remove("live");
+
+        previewEl.classList.add("hidden");
+        previewEl.innerHTML = "";
       });
   }
 
