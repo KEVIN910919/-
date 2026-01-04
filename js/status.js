@@ -24,13 +24,18 @@ CONFIG.channels.forEach(channel => {
   const statusEl = card.querySelector(".status");
   const linkEl = card.querySelector(".link");
 
-  /* ===== 共用顯示資料（完全自訂） ===== */
+  /* =========================
+     共用顯示資料（完全自訂）
+     ========================= */
   avatarEl.src = channel.avatar;
   nameEl.textContent = channel.name;
 
-  /* ===== Twitch ===== */
+  /* =========================
+     Twitch
+     ========================= */
   if (channel.platform === "twitch") {
     platformEl.textContent = "Twitch";
+    platformEl.className = "platform twitch";
     linkEl.href = `https://twitch.tv/${channel.twitch.channel}`;
 
     fetch(`https://decapi.me/twitch/uptime/${channel.twitch.channel}`)
@@ -39,19 +44,26 @@ CONFIG.channels.forEach(channel => {
         if (text.toLowerCase().includes("offline")) {
           statusEl.textContent = "⚫ 目前未開台";
           statusEl.className = "status offline";
+          card.classList.remove("live");
         } else {
           statusEl.textContent = "🟢 正在直播中";
           statusEl.className = "status live";
+          card.classList.add("live");
         }
       })
       .catch(() => {
         statusEl.textContent = "狀態讀取失敗";
+        statusEl.className = "status offline";
+        card.classList.remove("live");
       });
   }
 
-  /* ===== YouTube（展示型） ===== */
+  /* =========================
+     YouTube（展示型偵測）
+     ========================= */
   if (channel.platform === "youtube") {
     platformEl.textContent = "YouTube";
+    platformEl.className = "platform youtube";
     linkEl.href = `https://www.youtube.com/channel/${channel.youtube.channelId}`;
 
     const iframe = document.createElement("iframe");
@@ -60,8 +72,10 @@ CONFIG.channels.forEach(channel => {
     document.body.appendChild(iframe);
 
     setTimeout(() => {
+      // 展示型判斷：無法 100% 準確，但符合 GitHub Pages 限制
       statusEl.textContent = "⚫ 未偵測到直播";
       statusEl.className = "status offline";
+      card.classList.remove("live");
       iframe.remove();
     }, 2000);
   }
