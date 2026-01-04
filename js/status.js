@@ -41,11 +41,32 @@ CONFIG.channels.forEach(channel => {
     platformEl.className = "platform twitch";
     linkEl.href = `https://twitch.tv/${channel.twitch.channel}`;
 
-    fetch(`https://decapi.me/twitch/uptime/${channel.twitch.channel}`)
-      .then(r => r.text())
+    // 🔑 快取破壞（iframe / Safari / Google Sites 必須）
+    const ts = Date.now();
+
+    fetch(
+      `https://decapi.me/twitch/uptime/${encodeURIComponent(
+        channel.twitch.channel
+      )}?_=${ts}`,
+      {
+        cache: "no-store"
+      }
+    )
+      .then(r => {
+        if (!r.ok) throw new Error("Network error");
+        return r.text();
+      })
       .then(text => {
-        if (text.toLowerCase().includes("offline")) {
-          statusEl.textContent = "⚫ 目前未開台";
+        const t = text.toLowerCase();
+
+        // decapi 常見 offline 回傳字樣
+        const isOffline =
+          t.includes("offline") ||
+          t.includes("not live") ||
+          t.includes("is not live");
+
+        if (isOffline) {
+          statusEl.textContent = "⚫ 目前未直播";
           statusEl.className = "status offline";
           card.classList.remove("live");
         } else {
@@ -54,7 +75,8 @@ CONFIG.channels.forEach(channel => {
           card.classList.add("live");
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.error("Twitch status error:", err);
         statusEl.textContent = "狀態讀取失敗";
         statusEl.className = "status offline";
         card.classList.remove("live");
@@ -68,18 +90,29 @@ CONFIG.channels.forEach(channel => {
     platformEl.textContent = "YouTube";
     platformEl.className = "platform youtube";
 
-    // 預設先連頻道
+    // 預設先連頻道（customUrl 或 channel）
     linkEl.href = `https://www.youtube.com/${channel.id}`;
 
-    fetch(`${CONFIG.apiEndpoint}?channel=${encodeURIComponent(channel.id)}`)
-      .then(r => r.json())
+    // 🔑 快取破壞參數（iframe / GitHub Pages 必須）
+    const ts = Date.now();
+
+    fetch(
+      `${CONFIG.apiEndpoint}?channel=${encodeURIComponent(channel.id)}&_=${ts}`,
+      {
+        cache: "no-store"
+      }
+    )
+      .then(r => {
+        if (!r.ok) throw new Error("Network error");
+        return r.json();
+      })
       .then(data => {
-        if (data.live) {
+        if (data.live === true) {
           statusEl.textContent = "🟢 正在直播中";
           statusEl.className = "status live";
           card.classList.add("live");
 
-          // Live 時導向直播頁
+          // ✅ Live 時導向直播頁（官方推薦）
           linkEl.href = `https://www.youtube.com/channel/${data.channelId}/live`;
         } else {
           statusEl.textContent = "⚫ 目前未直播";
@@ -87,7 +120,8 @@ CONFIG.channels.forEach(channel => {
           card.classList.remove("live");
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.error("YouTube status error:", err);
         statusEl.textContent = "狀態讀取失敗";
         statusEl.className = "status offline";
         card.classList.remove("live");
