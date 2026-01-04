@@ -90,38 +90,37 @@ CONFIG.channels.forEach(channel => {
     platformEl.textContent = "YouTube";
     platformEl.className = "platform youtube";
 
-    // 預設先連頻道（customUrl 或 channel）
-    linkEl.href = `https://www.youtube.com/${channel.id}`;
+    // 預設連到頻道首頁
+    linkEl.href = `https://www.youtube.com/channel/${channel.id}`;
 
-    // 🔑 快取破壞參數（iframe / GitHub Pages 必須）
+    // 🔑 快取破壞（避免瀏覽器 / CF 快取）
     const ts = Date.now();
 
-    fetch(
-      `${CONFIG.apiEndpoint}?channel=${encodeURIComponent(channel.id)}&_=${ts}`,
-      {
-        cache: "no-store"
-      }
-    )
+    fetch(`${CONFIG.apiEndpoint}?channel=${channel.id}&_=${ts}`, {
+      cache: "no-store"
+    })
       .then(r => {
-        if (!r.ok) throw new Error("Network error");
+        if (!r.ok) throw new Error("Worker error");
         return r.json();
       })
       .then(data => {
         if (data.live === true) {
+          // 🟢 正在直播
           statusEl.textContent = "🟢 正在直播中";
           statusEl.className = "status live";
           card.classList.add("live");
 
-          // ✅ Live 時導向直播頁（官方推薦）
-          linkEl.href = `https://www.youtube.com/channel/${data.channelId}/live`;
+          // 直接導向直播頁
+          linkEl.href = data.url;
         } else {
+          // ⚫ 未直播
           statusEl.textContent = "⚫ 目前未直播";
           statusEl.className = "status offline";
           card.classList.remove("live");
         }
       })
       .catch(err => {
-        console.error("YouTube status error:", err);
+        console.error("YouTube RSS error:", err);
         statusEl.textContent = "狀態讀取失敗";
         statusEl.className = "status offline";
         card.classList.remove("live");
