@@ -16,6 +16,9 @@ CONFIG.channels.forEach(channel => {
       </div>
     </div>
     <div class="status">檢查中…</div>
+
+    <div class="preview hidden"></div>
+    
     <a class="link" target="_blank" rel="noopener">前往頻道</a>
   `;
 
