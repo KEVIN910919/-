@@ -11,14 +11,16 @@
 </head>
 
 <body>
-  <!-- 模組容器（方便做整體風格與陰影） -->
+  <!-- 模組容器（整體風格 / 陰影） -->
   <div class="module">
+    <!-- 頻道卡片列表（由 status.js 動態產生） -->
     <div id="channelList" class="list"></div>
   </div>
 
-  <!-- 設定檔 -->
+  <!-- 設定檔（頻道資料 / Worker endpoint） -->
   <script src="./js/config.js"></script>
-  <!-- 主邏輯 -->
+
+  <!-- 主邏輯（狀態判斷 + 直播預覽） -->
   <script src="./js/status.js"></script>
 </body>
 </html>
