@@ -35,6 +35,15 @@ const CONFIG = {
       platform: "youtube",
       name: "Augustus Ling Ch. 奧古斯都‧白翎",
       avatar: "https://yt3.googleusercontent.com/lgg4GTnUNPmfgSMiicRX-3yg6tJyF7B7Fb6pDlkj8yTrJAZ4mXz6rKYv-48qAOKloZkIS4t_OSI=s160-c-k-c0x00ffffff-no-rj"
+    },
+    {
+      id: "isyourlulu",
+      platform: "twitch",
+      name: "雪羽婭露露",
+      avatar: "https://static-cdn.jtvnw.net/jtv_user_pictures/3d62ab47-8664-4f1c-a537-e65b33ef566a-profile_image-70x70.png",
+      twitch: {
+        channel: "isyourlulu"
+      }
     }
   ]
 };
