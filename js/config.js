@@ -19,7 +19,7 @@ const CONFIG = {
       }
     },
     {
-      id: "AugustusLing",
+      id: "Miro",
       platform: "youtube",
       name: "堕天みろ / Miro Ch.",
       avatar: "https://yt3.googleusercontent.com/d21aO0udj6__GF0eMrTSHFx3N3kMxkfuNN17TKH_cPcI-8MJrzmzWBshjMhNTY4oiF3U76L7CA=s160-c-k-c0x00ffffff-no-rj",
