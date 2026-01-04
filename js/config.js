@@ -1,5 +1,5 @@
 const CONFIG = {
   twitch: {
-    channel: "你的twitch帳號"
+    channel: "mo_chan_neko"
   }
 };
