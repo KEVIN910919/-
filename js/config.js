@@ -4,7 +4,10 @@ const CONFIG = {
       id: "mo_chan_neko",
       platform: "twitch",
       twitch: {
-        channel: "mo_chan_neko"
+        channel: "mo_chan_neko",
+        customProfile: true,
+        name: "自訂顯示名稱",
+        avatar: "https://example.com/custom-avatar.png"
       }
     },
     {
