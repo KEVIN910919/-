@@ -1,7 +1,13 @@
 /* =========================
    Font (可自由更換)
    ========================= */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;600;700&display=swap");
+@font-face {
+  font-family: "GenSenRounded";
+  src: url("./fonts/GenSenRounded2JP-B.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* =========================
    Dreamlight Dark Theme
