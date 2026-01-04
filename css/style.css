@@ -5,19 +5,47 @@ body {
   background: transparent;
 }
 
+/* ===== 列表 ===== */
+.list {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+}
+
+/* ===== 卡片 ===== */
 .card {
-  max-width: 320px;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 12px;
 }
 
-.title {
-  font-weight: 700;
+/* ===== 頭部 ===== */
+.header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
   margin-bottom: 8px;
 }
 
-#status {
+/* ===== 頭像 ===== */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+/* ===== 文字 ===== */
+.name {
+  font-weight: 700;
+}
+
+.platform {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===== 狀態 ===== */
+.status {
   margin-bottom: 8px;
 }
 
