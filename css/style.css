@@ -40,9 +40,9 @@
 body {
   margin: 0;
   padding: 16px;
-  font-family: "Inter", "Noto Sans TC", system-ui, sans-serif;
-  color: var(--text-main);
+  font-family: "GenSenRounded", system-ui, sans-serif;
   background: transparent;
+  color: var(--text-main);
 }
 
 /* =========================
