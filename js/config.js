@@ -11,7 +11,7 @@ const CONFIG = {
       }
     },
     {
-      id: "b",
+      id: "AugustusLing",
       platform: "youtube",
       youtube: {
         channelId: "UCv0dlxt2yZf2U-n8kyA5hRQ",
